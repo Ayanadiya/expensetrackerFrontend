@@ -1,0 +1,7 @@
+.header{
+    background-color: rgb(182, 114, 245);
+    align-items: start;
+    color: white;
+    padding: 1rem 5%;
+    display: flex;
+}
