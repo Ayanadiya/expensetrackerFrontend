@@ -1,5 +1,5 @@
 import React from "react";
-import SignUpForm from "../Form/SignUpForm";
+import SignUpForm from '../components/Form/SignUpForm'
 import { Card } from "react-bootstrap";
 
 const SignUpPage=()=>{

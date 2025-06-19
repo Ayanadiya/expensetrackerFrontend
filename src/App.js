@@ -1,12 +1,15 @@
 import Header from './components/Layout/Header';
-import SignUpPage from './components/Page/SignUpPage';
+import AppRouter from './routes/AppRouter';
+import { BrowserRouter as Router } from 'react-router-dom/cjs/react-router-dom.min';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <Header/>
-      <SignUpPage/>
+      <Router>
+        <AppRouter/>
+      </Router>
     </div>
   );
 }
