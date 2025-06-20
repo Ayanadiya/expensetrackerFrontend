@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Container, Form, Button, Row } from "react-bootstrap";
 
 const ProfileForm=()=>{
@@ -8,6 +8,27 @@ const ProfileForm=()=>{
     const fullNameChangeHandler=e=>setFullName(e.target.value);
     const imageUrlChangeHandler=e=>setImageUrl(e.target.value);
 
+    const fetchProfile= async()=>{
+        try {
+            const response=await fetch('http://127.0.0.1:3000/user/profile',{
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':`Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data= await response.json();
+            setFullName(data.name);
+            setImageUrl(data.imageUrl);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(()=>{
+       fetchProfile();
+    },[])
+
     const formSubmitHandler=async (event)=>{
         event.preventDefault();
         const profile={
@@ -15,7 +36,7 @@ const ProfileForm=()=>{
             imageUrl
         };
         try {
-            const response= await fetch('http://127.0.0.1:3000/user/login', {
+            const response= await fetch('http://127.0.0.1:3000/user/addprofile', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
@@ -50,7 +71,7 @@ const ProfileForm=()=>{
                         <Form.Label>Profile Photo Url</Form.Label>
                         <Form.Control type="text" value={imageUrl} onChange={imageUrlChangeHandler} />
                     </Form.Group>
-                    <Button variant="primary" onClick={formSubmitHandler}>Login</Button>
+                    <Button variant="primary" onClick={formSubmitHandler}>Update</Button>
                 </Form>
             </Container>
         )
