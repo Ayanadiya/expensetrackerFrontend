@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 
-const LoginForm=()=>{
+const ResetPasswordForm=()=>{
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
 
@@ -20,7 +19,7 @@ const LoginForm=()=>{
             password
         };
         try {
-            const response= await fetch('http://127.0.0.1:4000/user/login', {
+            const response= await fetch('http://127.0.0.1:4000/password/reset', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -28,8 +27,7 @@ const LoginForm=()=>{
                 body:JSON.stringify(credentials)
             });
             const data= await response.json();
-            localStorage.setItem('token', data.token);
-            window.location="/home";
+            window.location="/";
             console.log(data);
         } catch (error) {
             console.log(error);
@@ -41,7 +39,7 @@ const LoginForm=()=>{
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <Form className="p-4 broder rounded shadow-sm bg-white" 
             style={{minWidth:'300px', maxWidth:'400px', width:'100%'}}>
-                <h3 className="text-center mb-4">Login</h3>
+                <h3 className="text-center mb-4">Reset Password</h3>
                 <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" value={email} onChange={emailChangeHandler} />
@@ -50,11 +48,10 @@ const LoginForm=()=>{
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" value={password} onChange={passwordChangeHandler} />
                 </Form.Group>
-                <Button variant="primary" onClick={formSubmitHandler}>Login</Button>
-                <NavLink to='/password'>Forgot Password</NavLink>
+                <Button variant="primary" onClick={formSubmitHandler}>Reset</Button>
             </Form>
         </Container>
     )
 }
 
-export default LoginForm;
+export default ResetPasswordForm;

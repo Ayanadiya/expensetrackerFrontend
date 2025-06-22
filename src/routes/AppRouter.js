@@ -2,6 +2,8 @@ import { Route, Switch } from "react-router-dom/cjs/react-router-dom.min";
 import LoginPage from "../Page/LoginPage";
 import SignUpPage from "../Page/SignUpPage";
 import HomePage from "../Page/HomePage";
+import PasswordForm from "../components/Form/PasswordForm";
+import ResetPasswordForm from "../components/Form/ResetPasswordForm";
 const AppRouter=()=>{
     const isLogged=localStorage.getItem('token');
 
@@ -16,6 +18,12 @@ const AppRouter=()=>{
             </Route>
             <Route path="/signUp">
             <SignUpPage />
+            </Route>
+            <Route path="/password">
+            <PasswordForm/>
+            </Route>
+            <Route path="/password/reset">
+            <ResetPasswordForm/>
             </Route>
         </Switch>
         </>
