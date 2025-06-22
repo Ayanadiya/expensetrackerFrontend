@@ -22,7 +22,7 @@ const AppRouter=()=>{
             <Route path="/password">
             <PasswordForm/>
             </Route>
-            <Route path="/password/reset">
+            <Route path="/reset">
             <ResetPasswordForm/>
             </Route>
         </Switch>

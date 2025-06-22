@@ -20,6 +20,7 @@ const PasswordForm=()=>{
             })
             const data=await response.json();
             alert(data.message);
+            isLoading(false);
             setEmail('');
         } catch (error) {
             console.log(error);
