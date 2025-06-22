@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, Modal, Button} from "react-bootstrap";
 import ProfileForm from "../components/Form/ProfileForm";
 import EmailButton from "../components/Button/EmailButton";
+import Logout from "../components/Button/Logout";
 
 const HomePage=()=>{
     const [showModal, setShowModal] = useState(false);
@@ -10,7 +11,11 @@ const HomePage=()=>{
     const handleClose = () => setShowModal(false);
     return (
         <div>
-            <p>Welcome to Home Page</p>
+            <div>
+                 <p>Welcome to Home Page</p>
+                 <Logout/>
+            </div>
+           
             <Card className="d-flex">
                 <Card.Body>Your profile is Incomplete.
                     <Button variant="link" onClick={handleOpen}>
