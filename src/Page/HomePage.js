@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Card, Modal, Button} from "react-bootstrap";
 import ProfileForm from "../components/Form/ProfileForm";
+import EmailButton from "../components/Button/EmailButton";
 
 const HomePage=()=>{
     const [showModal, setShowModal] = useState(false);
@@ -16,20 +16,13 @@ const HomePage=()=>{
                     <Button variant="link" onClick={handleOpen}>
                         Complete now
                     </Button>
+                    <EmailButton/>
                 </Card.Body>
             </Card>
             <Modal show={showModal} onHide={handleClose} size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>Complete Your Profile</Modal.Title>
-                </Modal.Header>
                 <Modal.Body>
-                    <ProfileForm />
+                    <ProfileForm onClose={handleClose}/>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </div>
    )
