@@ -8,8 +8,8 @@ const ExpenseList=()=>{
         <ul>
             <h1>Your Expenses</h1>
             {
-                expensectx.expenses.map((expense,index)=>{
-                    return <li key={index}>{expense.category} {expense.amount} {expense.description}</li>
+                expensectx.expenses.map((expense)=>{
+                    return <li key={expense._id}>{expense.category} {expense.amount} {expense.description}</li>
                 })
             }
         </ul>

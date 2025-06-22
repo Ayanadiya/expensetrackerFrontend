@@ -21,20 +21,20 @@ const ExpenseForm=()=>{
                 category:category
             }
             console.log(expense);
-            // const response=await fetch('http://127.0.0.1:4000/expense', {
-            //     method:'POST',
-            //     headers:{
-            //         'Content-Type':'application/json',
-            //         'Authorization':`Bearer ${localStorage.getItem('token')}`
-            //     },
-            //     body:JSON.stringify(expense)
-            // });
-            // if(!response.ok)
-            // {
-            //     console.log('response was not okay');
-            // }
-            // const data=await response.json();
-            expensectx.addExpense(expense);
+            const response=await fetch('http://127.0.0.1:4000/expense/expense', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':`Bearer ${localStorage.getItem('token')}`
+                },
+                body:JSON.stringify(expense)
+            });
+            if(!response.ok)
+            {
+                console.log('response was not okay');
+            }
+            const data=await response.json();
+            expensectx.addExpense(data);
             setAmount('');
             setCategory('');
             setDescription('');
