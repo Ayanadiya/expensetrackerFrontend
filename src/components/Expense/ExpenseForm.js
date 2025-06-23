@@ -1,16 +1,30 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import ExpenseContext from "../store/ExpenseContext";
 
-const ExpenseForm=()=>{
+const ExpenseForm=(props)=>{
     const expensectx=useContext(ExpenseContext);
     const [amount, setAmount]=useState('');
     const [description, setDescription]=useState('');
     const [category, setCategory]=useState('');
 
+    const {isEditing, currentExpense}=props;
+
     const amountChangeHandler=e=>setAmount(e.target.value);
     const descriptionChangeHandler=e=>setDescription(e.target.value);
     const categoryChangeHandler=e=>setCategory(e.target.value);
+
+    useEffect(()=>{
+        if(isEditing && currentExpense!==null)
+        {
+            setAmount(currentExpense.amount);
+            setDescription(currentExpense.description);
+            setCategory(currentExpense.category);
+        }
+    },[isEditing, currentExpense])
+
+    let Title=isEditing?"Edit Expense":"Add Expense";
+    let buttonTitle=isEditing?"Update":"Add";
 
     const formSubmitHandler=async (event)=>{
         event.preventDefault();
@@ -21,8 +35,10 @@ const ExpenseForm=()=>{
                 category:category
             }
             console.log(expense);
-            const response=await fetch('http://127.0.0.1:4000/expense/expense', {
-                method:'POST',
+            const url=isEditing?`http://127.0.0.1:4000/expense/expense/${currentExpense._id}`:'http://127.0.0.1:4000/expense/expense'
+            const method=isEditing?'PUT':'POST'
+            const response=await fetch(url, {
+                method:method,
                 headers:{
                     'Content-Type':'application/json',
                     'Authorization':`Bearer ${localStorage.getItem('token')}`
@@ -34,7 +50,10 @@ const ExpenseForm=()=>{
                 console.log('response was not okay');
             }
             const data=await response.json();
-            expensectx.addExpense(data);
+            isEditing?expensectx.editExpense(expense,currentExpense._id):expensectx.addExpense(data);
+            if(isEditing){
+                props.closeEditing();
+            }
             setAmount('');
             setCategory('');
             setDescription('');
@@ -48,7 +67,7 @@ const ExpenseForm=()=>{
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <Form className="p-4 broder rounded shadow-sm bg-white" 
             style={{minWidth:'300px', maxWidth:'400px', width:'100%'}}>
-                <h3 className="text-center mb-4">Add Expense</h3>
+                <h3 className="text-center mb-4">{Title}</h3>
                 <Form.Group className="mb-3">
                     <Form.Label>Amount</Form.Label>
                     <Form.Control type="number" value={amount} onChange={amountChangeHandler} />
@@ -66,7 +85,7 @@ const ExpenseForm=()=>{
                     <option value="Grocery">Grocery</option>
                     <option value="Personal">Personal</option>
                 </Form.Select>
-                <Button variant="primary" onClick={formSubmitHandler}>Add</Button>
+                <Button variant="primary" onClick={formSubmitHandler}>{buttonTitle}</Button>
             </Form>
         </Container>
     )

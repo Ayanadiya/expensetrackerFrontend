@@ -9,9 +9,21 @@ import ExpenseList from "../components/Expense/ExpenseList";
 
 const HomePage=()=>{
     const [showModal, setShowModal] = useState(false);
+    const [isEditing, setIsEditing]= useState(false);
+    const [currentExpense, setCurrentExpense]= useState(null);
 
     const handleOpen = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
+
+    const getEditing=(expense)=>{
+         setIsEditing(true);
+         setCurrentExpense(expense);
+    }
+
+    const closeEditing=()=>{
+        setIsEditing(false);
+        setCurrentExpense(null);
+    }
     return (
         <ExpenseProvider>
             <div>
@@ -27,8 +39,8 @@ const HomePage=()=>{
                     <EmailButton/>
                 </Card.Body>
             </Card>
-            <ExpenseForm/>
-            <ExpenseList />
+            <ExpenseForm isEditing={isEditing} currentExpense={currentExpense} closeEditing={closeEditing}/>
+            <ExpenseList openEditing={getEditing}/>
             <Modal show={showModal} onHide={handleClose} size="lg">
                 <Modal.Body>
                     <ProfileForm onClose={handleClose}/>
