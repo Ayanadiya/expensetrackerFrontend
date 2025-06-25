@@ -1,8 +1,11 @@
 import React, {useState} from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
+import { authActions } from "../store/Auth";
+import { useDispatch } from "react-redux";
 
 const LoginForm=()=>{
+    const dispatch=useDispatch();
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
 
@@ -28,6 +31,7 @@ const LoginForm=()=>{
                 body:JSON.stringify(credentials)
             });
             const data= await response.json();
+            dispatch(authActions.login(data.token));
             localStorage.setItem('token', data.token);
             window.location="/home";
             console.log(data);

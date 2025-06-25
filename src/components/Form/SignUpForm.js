@@ -1,7 +1,10 @@
 import React, {useState} from "react";
 import { Container, Form, Button} from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/Auth";
 
 const SignUpForm=()=>{
+    const dispatch=useDispatch();
     const [email, setEmail]=useState("");
     const [password, setPassword]=useState("");
     const [confirmPasword, setConfirmPassword]=useState("");
@@ -34,6 +37,7 @@ const SignUpForm=()=>{
             })
             const data=await response.json();
             console.log(data);
+            dispatch(authActions.login(data.token));
             localStorage.setItem('token', data.token)
             alert(data.message);
             console.log("User has successfully signed Up");

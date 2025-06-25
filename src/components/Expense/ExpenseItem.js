@@ -1,10 +1,10 @@
 import { Button, Card, Row } from "react-bootstrap";
-import { useContext } from "react";
-import ExpenseContext from "../store/ExpenseContext";
+import { useDispatch } from "react-redux";
+import { expenseActions } from "../store/Expense";
 
 
 const ExpenseItem=(props)=>{
-    const expensectx=useContext(ExpenseContext);
+    const dispatch=useDispatch()
     const expense=props.expense;
     
     const editHandler=(expense)=>{
@@ -20,12 +20,13 @@ const ExpenseItem=(props)=>{
                     'Authorization':`Bearer ${localStorage.getItem('token')}`
                 }
             })
-            if(response.status===204)
+            if(!response.ok)
             {
-                expensectx.deleteExpense(id)
+                throw new Error("Response was not okay");
             }
             const data=await response.json();
             alert(data.message);
+            dispatch(expenseActions.delete(id))
         } catch (error) {
             console.log(error)
         } 

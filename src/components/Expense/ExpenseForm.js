@@ -1,9 +1,11 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import ExpenseContext from "../store/ExpenseContext";
+import { useDispatch } from "react-redux";
+import { expenseActions } from "../store/Expense";
+
 
 const ExpenseForm=(props)=>{
-    const expensectx=useContext(ExpenseContext);
+    const dispatch=useDispatch();
     const [amount, setAmount]=useState('');
     const [description, setDescription]=useState('');
     const [category, setCategory]=useState('');
@@ -13,6 +15,7 @@ const ExpenseForm=(props)=>{
     const amountChangeHandler=e=>setAmount(e.target.value);
     const descriptionChangeHandler=e=>setDescription(e.target.value);
     const categoryChangeHandler=e=>setCategory(e.target.value);
+
 
     useEffect(()=>{
         if(isEditing && currentExpense!==null)
@@ -29,12 +32,12 @@ const ExpenseForm=(props)=>{
     const formSubmitHandler=async (event)=>{
         event.preventDefault();
         try {
-            const expense={
+            const newexpense={
                 amount:amount,
                 description:description,
                 category:category
             }
-            console.log(expense);
+            console.log(newexpense);
             const url=isEditing?`http://127.0.0.1:4000/expense/expense/${currentExpense._id}`:'http://127.0.0.1:4000/expense/expense'
             const method=isEditing?'PUT':'POST'
             const response=await fetch(url, {
@@ -43,14 +46,15 @@ const ExpenseForm=(props)=>{
                     'Content-Type':'application/json',
                     'Authorization':`Bearer ${localStorage.getItem('token')}`
                 },
-                body:JSON.stringify(expense)
+                body:JSON.stringify(newexpense)
             });
             if(!response.ok)
             {
                 console.log('response was not okay');
             }
             const data=await response.json();
-            isEditing?expensectx.editExpense(expense,currentExpense._id):expensectx.addExpense(data);
+            const id=isEditing?currentExpense._id:data._id;
+            isEditing?dispatch(expenseActions.edit({newexpense,id})):dispatch(expenseActions.add(data));
             if(isEditing){
                 props.closeEditing();
             }
